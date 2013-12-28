@@ -7,22 +7,23 @@
 ;;use unix style line endings
 (setq default-buffer-file-coding-system 'utf-8-unix)
 
+
 (require 'package)
 (package-initialize)
+;;;;Takes too long to do this every start up.
+;; (add-to-list 'package-archives
+;;              '("melpa" . "http://melpa.milkbox.net/packages/"))
+             
+;; ;;Required for python-mode
+;; (add-to-list 'package-archives
+;;              '("marmalade" . "http://marmalade-repo.org/packages/") t)
+             
+;; (package-refresh-contents)
 
 ;A function to only install packages that are not already installed
 (defun install-if-needed (package)
   (unless (package-installed-p package)
-    (package-install package)))
-
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/"))
-             
-;;Required for python-mode
-(add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/") t)
-             
-(package-refresh-contents)
+    (package-install package)));
 
 ;A list of things to install
 ;A single quote tells emacs not to evaluate the expression inside the list
@@ -70,6 +71,30 @@
 (add-hook 'python-mode-hook 'autopair-mode)
 (add-hook 'python-mode-hook 'flymake-activate)
 (add-hook 'python-mode-hook 'auto-complete-mode)
+
+;;================IPython===============
+(require 'ipython)
+(setq
+ python-shell-interpreter "C:\\Python27\\Scripts\\ipython.exe"
+ python-shell-interpreter-args ""
+ python-shell-prompt-regexp "In \\[[0-9]+\\]: "
+ python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
+ python-shell-completion-setup-code
+   "from IPython.core.completerlib import module_completion"
+ python-shell-completion-module-string-code
+   "';'.join(module_completion('''%s'''))\n"
+ python-shell-completion-string-code
+   "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
+
+;;yanked from http://www.jesshamrick.com/2012/09/18/emacs-as-a-python-ide/
+; switch to the interpreter after executing code
+;; (setq py-shell-switch-buffers-on-execute-p t)
+;; (setq py-switch-buffers-on-execute-p t)
+;; ; don't split windows
+;; (setq py-split-windows-on-execute-p nil)
+;; ; try to automagically figure out indentation
+;; (setq py-smart-indentation t)
+
 
 ;; ;; Jedi settings
 (require 'jedi)
