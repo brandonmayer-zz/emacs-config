@@ -1,5 +1,6 @@
 ; Helpful python emacs setup:
 ; http://www.youtube.com/watch?v=0cZ7szFuz18&list=WLRWY_nnLzduOW16lec5L-ssd31pUij1nE
+
 (add-to-list 'load-path "~/.emacs.d/")
 (setq inhibit-splash-screen t)
 
