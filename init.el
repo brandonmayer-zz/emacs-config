@@ -7,6 +7,19 @@
 ;;use unix style line endings
 (setq default-buffer-file-coding-system 'utf-8-unix)
 
+;;Kill toolbar
+(tool-bar-mode -1)
+
+;;auto-hide the menue bar
+;;TODO: Not working on my windows box.
+(load "active-menu.el")
+(require 'active-menu)
+;; (autoload 'active-menu
+;;            "active-menu"
+;;            "Show menu only when mouse is at the top of the frame."
+;;            t)
+(menu-bar-mode -99)
+
 (require 'package)
 (package-initialize)
 ;;;;Takes too long to do this every start up.
@@ -31,6 +44,10 @@
 ;execute the install-if-needed function on every package in the 
 ;to-install-list
 (mapc 'install-if-needed to-install)
+
+;;invoke buffer menue instead of list-buffers
+;;so that the buffer window doesn't override my other buffer frames
+(global-set-key "\C-x\C-b" 'buffer-menu)
 
 ;Load the installed packages
 (require 'python-mode)
