@@ -20,6 +20,9 @@
 ;;            t)
 (menu-bar-mode -99)
 
+;;Get rid of scroll bars
+(scroll-bar-mode -1)
+
 (require 'package)
 (package-initialize)
 ;;;;Takes too long to do this every start up.
