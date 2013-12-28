@@ -7,7 +7,6 @@
 ;;use unix style line endings
 (setq default-buffer-file-coding-system 'utf-8-unix)
 
-
 (require 'package)
 (package-initialize)
 ;;;;Takes too long to do this every start up.
@@ -73,6 +72,7 @@
 (add-hook 'python-mode-hook 'auto-complete-mode)
 
 ;;================IPython===============
+;;Not working up to snuff yet
 (require 'ipython)
 (setq
  python-shell-interpreter "C:\\Python27\\Scripts\\ipython.exe"
@@ -113,6 +113,10 @@
             (local-set-key (kbd "M-SPC") 'jedi:complete)
             (local-set-key (kbd "M-.") 'jedi:goto-definition)))
 
+;;================Fonts===============
+(set-default-font
+ "-outline-Consolas-normal-r-normal-normal-14-97-96-96-c-*-iso8859-1")
+
 ;; Flymake settings for Python
 (defun flymake-python-init ()
   (let* ((temp-file (flymake-init-create-temp-buffer-copy
@@ -135,6 +139,9 @@
 
 ; Turn beep off
 (setq visible-bell nil)
+
+
+
 
 
 
