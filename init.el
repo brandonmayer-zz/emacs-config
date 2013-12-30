@@ -10,6 +10,9 @@
 ;;Kill toolbar
 (tool-bar-mode -1)
 
+; Turn beep off
+(setq visible-bell nil)
+
 ;;auto-hide the menue bar
 ;;TODO: Not working on my windows box.
 (load "active-menu.el")
@@ -157,8 +160,37 @@
         (local-set-key (kbd "C-c n") 'flymake-goto-next-error)
         (local-set-key (kbd "C-c p") 'flymake-goto-prev-error))))
 
-; Turn beep off
-(setq visible-bell nil)
+;;================C++===============
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.txx\\'" . c++-mode))
+
+(defun my-c-mode-common-hook ()
+  (setq c-default-style "linux"
+	c-basic-offset 2
+	c-indent-level 2
+	indent-tabs-mode nil)
+)
+(add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
+
+;;================Misc===============
+;; source: http://steve.yegge.googlepages.com/my-dot-emacs-file
+(defun rename-file-and-buffer (new-name)
+  "Renames both current buffer and file it's visiting to NEW-NAME."
+  (interactive "sNew name: ")
+  (let ((name (buffer-name))
+        (filename (buffer-file-name)))
+    (if (not filename)
+        (message "Buffer '%s' is not visiting a file!" name)
+      (if (get-buffer new-name)
+          (message "A buffer named '%s' already exists!" new-name)
+        (progn
+          (rename-file name new-name 1)
+          (rename-buffer new-name)
+          (set-visited-file-name new-name)
+          (set-buffer-modified-p nil))))))
+
+
+
 
 
 
