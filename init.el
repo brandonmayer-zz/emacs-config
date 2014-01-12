@@ -26,26 +26,33 @@
 ;;Get rid of scroll bars
 (scroll-bar-mode -1)
 
-(require 'package)
-(package-initialize)
-;;;;Takes too long to do this every start up.
-;; (add-to-list 'package-archives
-;;              '("melpa" . "http://melpa.milkbox.net/packages/"))
-             
-;; ;;Required for python-mode
-;; (add-to-list 'package-archives
-;;              '("marmalade" . "http://marmalade-repo.org/packages/") t)
-             
-;; (package-refresh-contents)
-
 ;A function to only install packages that are not already installed
 (defun install-if-needed (package)
   (unless (package-installed-p package)
     (package-install package)));
 
+;; (defun install-python-mode ()
+;;   (unless (package-installed-p python-mode)
+;;     ())
+
 ;A list of things to install
 ;A single quote tells emacs not to evaluate the expression inside the list
 (setq to-install '(python-mode auto-complete jedi autopair))
+
+(require 'package)
+(package-initialize)
+;;;;Takes too long to do this every start up.
+;;Required for Jedi.el
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.milkbox.net/packages/"))
+             
+;;Required for python-mode
+(add-to-list 'package-archives
+             '("marmalade" . "http://marmalade-repo.org/packages/") t)
+             
+(package-refresh-contents)
+
+
 
 ;execute the install-if-needed function on every package in the 
 ;to-install-list
