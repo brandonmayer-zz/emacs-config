@@ -1,30 +1,80 @@
 ; Helpful python emacs setup:
 ; http://www.youtube.com/watch?v=0cZ7szFuz18&list=WLRWY_nnLzduOW16lec5L-ssd31pUij1nE
 
+;;For emacsclient
+(server-start)
+
+;;transparency
+(set-frame-parameter (selected-frame) 'alpha '(90 50))
+(add-to-list 'default-frame-alist '(alpha 90 50))
+;; (if (daemonp)
+;;    (add-hook 'after-make-frame-functions
+;; 	     (lambda (frame) 
+;; 	       (set-frame-parameter (select-frame) 'alpha '(90 50)))
+;; 	     (lambda (frame) 
+;; 	       (add-to-list 'default-frame-alist '(alpha 90 50)))))
+(if (daemonp)
+    (add-hook 'before-make-frame-hook
+	      (lambda () (set-frame-parameter (selected-frame) 'alpha '(90 50)))
+	      (lambda () (add-to-list 'default-frame-alist '(alpha 90 50)))))
+
+
+
+
 (add-to-list 'load-path "~/.emacs.d/")
 (setq inhibit-splash-screen t)
 
 ;;use unix style line endings
 (setq default-buffer-file-coding-system 'utf-8-unix)
 
+;;show me the column number
+(setq column-number-mode t)
+
 ;;Kill toolbar
-(tool-bar-mode -1)
+(tool-bar-mode 0)
+(menu-bar-mode 0)
+;;Get rid of scroll bars
+(scroll-bar-mode -1)
+;;above doesn't always work for emacs client
+;; (set-specifier horizontal-scrollbar-visible-p nil)
+;; (set-specifier vertical-scrollbar-visible-p nil)
+(if (daemonp)
+    (add-hook 'after-make-frame-functions
+	      (lambda (frame)
+		(scroll-bar-mode -1))))
 
 ; Turn beep off
 (setq visible-bell nil)
 
+;;kill the lights
+(custom-set-faces
+  '(default ((t (:background "black" :foreground "grey"))))
+  '(fringe ((t (:background "black")))))
+
+(if (daemonp)
+    (add-hook 'after-make-frame-functions
+	      (lambda (frame)
+		(custom-set-faces 
+		   '(default ((t (:background "black" :foreground "grey"))))
+		   '(fringe ((t (:background "black")))))))
+    )
+
 ;;auto-hide the menue bar
 ;;TODO: Not working on my windows box.
-(load "active-menu.el")
-(require 'active-menu)
+;; (load "active-menu.el")
+;; (require 'active-menu)
 ;; (autoload 'active-menu
 ;;            "active-menu"
 ;;            "Show menu only when mouse is at the top of the frame."
 ;;            t)
-(menu-bar-mode -99)
+;; (menu-bar-mode -99)
 
-;;Get rid of scroll bars
-(scroll-bar-mode -1)
+;;turn off all alarms
+(setq ring-bell-function 'ignore)
+
+;;backups should go to one directory
+;;so as not to pollute a source tree
+(setq backup-directory-alist `(("." . "~/.saves")))
 
 ;A function to only install packages that are not already installed
 (defun install-if-needed (package)
@@ -77,7 +127,7 @@
 
 ;;================Latex================
 (add-to-list 'auto-mode-alist ' ("\\.tex\\'" . LaTeX-mode))
-
+(add-hook 'LaTeX-mode-hook '(flyspell-mode t))
 
 ;;================Flyspell================
 (dolist (hook '(text-mode-hook))
@@ -146,6 +196,7 @@
 ;;================Fonts===============
 (set-default-font
  "-outline-Consolas-normal-r-normal-normal-14-97-96-96-c-*-iso8859-1")
+(setq default-frame-alist '((font . "-outline-Consolas-normal-r-normal-normal-14-97-96-96-c-*-iso8859-1")))
 
 ;; Flymake settings for Python
 (defun flymake-python-init ()
@@ -179,6 +230,15 @@
 )
 (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
 
+;;from http://stackoverflow.com/questions/19532430/emacs-auto-complete-clang
+;;forl clang autocomplete
+;; (require 'yasnippet)
+;; (yas-global-mode 1)
+
+(require 'auto-complete-config)
+(ac-config-default)
+(require 'auto-complete-clang)
+
 ;;================Misc===============
 ;; source: http://steve.yegge.googlepages.com/my-dot-emacs-file
 (defun rename-file-and-buffer (new-name)
@@ -195,13 +255,3 @@
           (rename-buffer new-name)
           (set-visited-file-name new-name)
           (set-buffer-modified-p nil))))))
-
-
-
-
-
-
-
-
-
-
