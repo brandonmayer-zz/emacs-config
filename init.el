@@ -13,19 +13,58 @@
 ; Turn beep off
 (setq visible-bell nil)
 
+;;put all backups in one place
+;;from http://www.emacswiki.org/emacs/BackupDirectory
+(setq backup-directory-alist
+'(("." . "~/.saves"))    ; don't litter my fs tree
+   delete-old-versions t
+   kept-new-versions 6
+   kept-old-versions 2
+   version-control t)
+
 ;;auto-hide the menue bar
 ;;TODO: Not working on my windows box.
-(load "active-menu.el")
-(require 'active-menu)
-;; (autoload 'active-menu
-;;            "active-menu"
-;;            "Show menu only when mouse is at the top of the frame."
-;;            t)
+;; (load "active-menu.el")
+;; (require 'active-menu)
+;; ;; (autoload 'active-menu
+;; ;;            "active-menu"
+;; ;;            "Show menu only when mouse is at the top of the frame."
+;; ;;            t)
+
+
+;;==============SOLARIZED==================
+(add-to-list 'load-path "~/.emacs.d/color-theme-solarized")
+(add-to-list 'load-path "~/.emacs.d/color-theme")
+(progn
+  (require 'color-theme)
+  (color-theme-initialize)
+  (require 'color-theme-solarized)
+  (color-theme-solarized-dark))
+
 (menu-bar-mode -99)
 
 ;;Get rid of scroll bars
 (scroll-bar-mode -1)
 
+;; ;;kill the lights
+;; (custom-set-faces
+;;   '(default ((t (:background "black" :foreground "grey"))))
+;;   '(fringe ((t (:background "black")))))
+
+;; (if (daemonp)
+;;     (add-hook 'after-make-frame-functions
+;;               (lambda (frame)
+;;                 (custom-set-faces
+;;                    '(default ((t (:background "black" :foreground "grey"))))
+;;                    '(fringe ((t (:background "black")))))))
+;;     )
+
+;; ;;================Fonts===============                                                                     
+;; (set-default-font                                                                                          
+;;  "-outline-Consolas-normal-r-normal-normal-18-97-96-96-c-*-iso8859-1")                                     
+;; (setq default-frame-alist '((font . "-outline-Consolas-normal-r-normal-normal-14-97-96-96-c-*-iso8859-1")))
+
+;;================Package=============
 (require 'package)
 (package-initialize)
 ;;;;Takes too long to do this every start up.
@@ -73,6 +112,9 @@
 
 
 ;;================Flyspell================
+;;use aspell instead of ispell
+(setq-default ispell-program-name "aspell")
+
 (dolist (hook '(text-mode-hook))
       (add-hook hook (lambda () (flyspell-mode 1))))
     (dolist (hook '(change-log-mode-hook log-edit-mode-hook))
@@ -136,9 +178,7 @@
             (local-set-key (kbd "M-SPC") 'jedi:complete)
             (local-set-key (kbd "M-.") 'jedi:goto-definition)))
 
-;;================Fonts===============
-(set-default-font
- "-outline-Consolas-normal-r-normal-normal-14-97-96-96-c-*-iso8859-1")
+
 
 ;; Flymake settings for Python
 (defun flymake-python-init ()
@@ -189,12 +229,21 @@
           (set-visited-file-name new-name)
           (set-buffer-modified-p nil))))))
 
+;;Use cygwin bash
+;;From http://www.masteringemacs.org/articles/2010/11/01/running-shells-in-emacs-overview/
+(setq explicit-shell-file-name "C:/cygwin/bin/bash.exe")
+(setq shell-file-name "bash")
+(setq explicit-bash.exe-args '("--noediting" "--login" "-i"))
+(setenv "SHELL" shell-file-name)
+(add-hook 'comint-output-filter-functions 'comint-strip-ctrl-m)
 
+;;Activate Wind Move to easily navigate windows
+(when (fboundp 'windmove-default-keybindings)
+  (windmove-default-keybindings))
 
-
-
-
-
+;;DOCVIEW
+(setq doc-view-ghostscript-program "gswin64c")
+(add-hook 'doc-view-mode-hook 'auto-revert-mode)
 
 
 
