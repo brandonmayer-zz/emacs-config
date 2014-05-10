@@ -5,8 +5,8 @@
 (server-start)
 
 ;;transparency
-(set-frame-parameter (selected-frame) 'alpha '(90 50))
-(add-to-list 'default-frame-alist '(alpha 90 50))
+(set-frame-parameter (selected-frame) 'alpha '(90 90))
+(add-to-list 'default-frame-alist '(alpha 90 90))
 ;; (if (daemonp)
 ;;    (add-hook 'after-make-frame-functions
 ;; 	     (lambda (frame) 
@@ -15,14 +15,14 @@
 ;; 	       (add-to-list 'default-frame-alist '(alpha 90 50)))))
 (if (daemonp)
     (add-hook 'before-make-frame-hook
-	      (lambda () (set-frame-parameter (selected-frame) 'alpha '(90 50)))
-	      (lambda () (add-to-list 'default-frame-alist '(alpha 90 50)))))
-
-
-
+	      (lambda () (set-frame-parameter (selected-frame) 'alpha '(90 90)))
+	      (lambda () (add-to-list 'default-frame-alist '(alpha 90 90)))))
 
 (add-to-list 'load-path "~/.emacs.d/")
 (setq inhibit-splash-screen t)
+
+(require 'tramp)
+(setq tramp-default-method "ssh")
 
 ;;use unix style line endings
 (setq default-buffer-file-coding-system 'utf-8-unix)
@@ -255,3 +255,29 @@
           (rename-buffer new-name)
           (set-visited-file-name new-name)
           (set-buffer-modified-p nil))))))
+
+;;================EMACS BASH COMPLETION===================
+(autoload 'bash-completion-dynamic-complete 
+  "bash-completion"
+  "BASH completion hook")
+(add-hook 'shell-dynamic-complete-functions
+  'bash-completion-dynamic-complete)
+(add-hook 'shell-command-complete-functions
+  'bash-completion-dynamic-complete)
+
+;;================PYTHON VIRTUAL ENVIRONMENT==============
+(require 'virtualenvwrapper)
+(venv-initialize-interactive-shells) ;; if you want interactive shell support
+(venv-initialize-eshell) ;; if you want eshell support
+(setq venv-location "~/.virtualenvs")
+
+;;work on python2 by default
+;; (add-hook 'python-mode-hook (lambda ()
+;;                               (venv-workon python2)))
+(venv-workon "python2")
+;;show the venv on the mode line
+(setq-default mode-line-format (cons '(:exec venv-current-name) mode-line-format))
+
+;;================DOCVIEW SETTINGS==============
+(setq doc-view-continuous 1)
+(add-hook 'doc-view-mode-hook 'auto-revert-mode)
