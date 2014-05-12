@@ -2,10 +2,11 @@
 ; http://www.youtube.com/watch?v=0cZ7szFuz18&list=WLRWY_nnLzduOW16lec5L-ssd31pUij1nE
 
 ;;For emacsclient
-(server-start)
+;;(server-start)
 
 ;;transparency
-(set-frame-parameter (selected-frame) 'alpha '(90 90))
+(if window-system 
+(set-frame-parameter (selected-frame) 'alpha '(90 90)))
 (add-to-list 'default-frame-alist '(alpha 90 90))
 ;; (if (daemonp)
 ;;    (add-hook 'after-make-frame-functions
@@ -31,17 +32,19 @@
 (setq column-number-mode t)
 
 ;;Kill toolbar
-(tool-bar-mode 0)
-(menu-bar-mode 0)
-;;Get rid of scroll bars
-(scroll-bar-mode -1)
+(if window-system
+  (tool-bar-mode 0)
+  (menu-bar-mode 0))
+
+;; (scroll-bar-mode -1)
+
 ;;above doesn't always work for emacs client
 ;; (set-specifier horizontal-scrollbar-visible-p nil)
 ;; (set-specifier vertical-scrollbar-visible-p nil)
-(if (daemonp)
-    (add-hook 'after-make-frame-functions
-	      (lambda (frame)
-		(scroll-bar-mode -1))))
+;; (if (daemonp)
+;;     (add-hook 'after-make-frame-functions
+;; 	      (lambda (frame)
+;; 		(scroll-bar-mode -1))))
 
 ; Turn beep off
 (setq visible-bell nil)
@@ -100,7 +103,7 @@
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
              
-(package-refresh-contents)
+;; (package-refresh-contents)
 
 
 
