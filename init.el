@@ -2,7 +2,9 @@
 ; http://www.youtube.com/watch?v=0cZ7szFuz18&list=WLRWY_nnLzduOW16lec5L-ssd31pUij1nE
 
 ;;For emacsclient
-;;(server-start)
+(require 'server)
+(or (server-running-p)
+    (server-start))
 
 ;;transparency
 (if window-system 
