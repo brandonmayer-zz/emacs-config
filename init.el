@@ -78,7 +78,7 @@
 
 ;A list of things to install
 ;A single quote tells emacs not to evaluate the expression inside the list
-(setq to-install '(python-mode auto-complete jedi autopair auto-complete-clang virtualenvwrapper))
+(setq to-install '(python-mode auto-complete jedi autopair auto-complete-clang virtualenvwrapper color-theme-solarized yasnippet))
 
 (require 'package)
 (package-initialize)
@@ -90,8 +90,9 @@
 ;;Required for python-mode
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
-             
-(package-refresh-contents)
+
+(when (not package-archive-contents)             
+  (package-refresh-contents))
 
 
 
@@ -218,8 +219,8 @@
 
 ;;from http://stackoverflow.com/questions/19532430/emacs-auto-complete-clang
 ;;forl clang autocomplete
-;; (require 'yasnippet)
-;; (yas-global-mode 1)
+(require 'yasnippet)
+(yas-global-mode 1)
 
 (require 'auto-complete-config)
 (ac-config-default)
@@ -264,3 +265,6 @@
 ;;================DOCVIEW SETTINGS==============
 (setq doc-view-continuous 1)
 (add-hook 'doc-view-mode-hook 'auto-revert-mode)
+
+(if window-system 
+  (load-theme 'solarized-light t)) 
