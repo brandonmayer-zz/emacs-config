@@ -34,11 +34,10 @@
 (setq column-number-mode t)
 
 ;;Kill toolbar
-(if window-system
-  (tool-bar-mode 0)
-  (menu-bar-mode 0))
 
-;; (scroll-bar-mode -1)
+(if window-system
+  (tool-bar-mode -1)
+  (menu-bar-mode -1))
 
 ;;above doesn't always work for emacs client
 ;; (set-specifier horizontal-scrollbar-visible-p nil)
@@ -50,19 +49,6 @@
 
 ; Turn beep off
 (setq visible-bell nil)
-
-;;kill the lights
-(custom-set-faces
-  '(default ((t (:background "black" :foreground "grey"))))
-  '(fringe ((t (:background "black")))))
-
-(if (daemonp)
-    (add-hook 'after-make-frame-functions
-	      (lambda (frame)
-		(custom-set-faces 
-		   '(default ((t (:background "black" :foreground "grey"))))
-		   '(fringe ((t (:background "black")))))))
-    )
 
 ;;auto-hide the menue bar
 ;;TODO: Not working on my windows box.
@@ -92,7 +78,7 @@
 
 ;A list of things to install
 ;A single quote tells emacs not to evaluate the expression inside the list
-(setq to-install '(python-mode auto-complete jedi autopair))
+(setq to-install '(python-mode auto-complete jedi autopair auto-complete-clang virtualenvwrapper))
 
 (require 'package)
 (package-initialize)
@@ -105,7 +91,7 @@
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
              
-;; (package-refresh-contents)
+(package-refresh-contents)
 
 
 
@@ -198,11 +184,6 @@
             (local-set-key (kbd "M-SPC") 'jedi:complete)
             (local-set-key (kbd "M-.") 'jedi:goto-definition)))
 
-;;================Fonts===============
-(set-default-font
- "-outline-Consolas-normal-r-normal-normal-14-97-96-96-c-*-iso8859-1")
-(setq default-frame-alist '((font . "-outline-Consolas-normal-r-normal-normal-14-97-96-96-c-*-iso8859-1")))
-
 ;; Flymake settings for Python
 (defun flymake-python-init ()
   (let* ((temp-file (flymake-init-create-temp-buffer-copy
@@ -276,10 +257,7 @@
 (venv-initialize-eshell) ;; if you want eshell support
 (setq venv-location "~/.virtualenvs")
 
-;;work on python2 by default
-;; (add-hook 'python-mode-hook (lambda ()
-;;                               (venv-workon python2)))
-(venv-workon "python2")
+(venv-workon "env1")
 ;;show the venv on the mode line
 (setq-default mode-line-format (cons '(:exec venv-current-name) mode-line-format))
 
