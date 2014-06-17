@@ -1,5 +1,6 @@
 ; Helpful python emacs setup:
 ; http://www.youtube.com/watch?v=0cZ7szFuz18&list=WLRWY_nnLzduOW16lec5L-ssd31pUij1nE
+(setq-default indent-tabs-mode nil)
 
 ;;For emacsclient
 (require 'server)
@@ -7,7 +8,7 @@
     (server-start))
 
 ;;transparency
-(if window-system 
+(when window-system 
 (set-frame-parameter (selected-frame) 'alpha '(90 90)))
 (add-to-list 'default-frame-alist '(alpha 90 90))
 ;; (if (daemonp)
@@ -16,10 +17,10 @@
 ;; 	       (set-frame-parameter (select-frame) 'alpha '(90 50)))
 ;; 	     (lambda (frame) 
 ;; 	       (add-to-list 'default-frame-alist '(alpha 90 50)))))
-(if (daemonp)
-    (add-hook 'before-make-frame-hook
-	      (lambda () (set-frame-parameter (selected-frame) 'alpha '(90 90)))
-	      (lambda () (add-to-list 'default-frame-alist '(alpha 90 90)))))
+;; (if (daemonp)
+;;     (add-hook 'before-make-frame-hook
+;; 	      (lambda () (set-frame-parameter (selected-frame) 'alpha '(90 90)))
+;; 	      (lambda () (add-to-list 'default-frame-alist '(alpha 90 90)))))
 
 (add-to-list 'load-path "~/.emacs.d/")
 (setq inhibit-splash-screen t)
@@ -34,35 +35,39 @@
 (setq column-number-mode t)
 
 ;;Kill toolbar
-(if window-system
-  (tool-bar-mode 0)
-  (menu-bar-mode 0))
+(when window-system
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1))
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
 
 ;; (scroll-bar-mode -1)
 
 ;;above doesn't always work for emacs client
 ;; (set-specifier horizontal-scrollbar-visible-p nil)
 ;; (set-specifier vertical-scrollbar-visible-p nil)
-;; (if (daemonp)
-;;     (add-hook 'after-make-frame-functions
-;; 	      (lambda (frame)
-;; 		(scroll-bar-mode -1))))
+(if (daemonp)
+    (add-hook 'after-make-frame-functions
+	      (lambda (frame)
+		(scroll-bar-mode -1))))
 
 ; Turn beep off
 (setq visible-bell nil)
 
 ;;kill the lights
-(custom-set-faces
-  '(default ((t (:background "black" :foreground "grey"))))
-  '(fringe ((t (:background "black")))))
+;; (custom-set-faces
+;;   '(default ((t (:background "black" :foreground "grey"))))
+;;   '(fringe ((t (:background "black")))))
 
-(if (daemonp)
-    (add-hook 'after-make-frame-functions
-	      (lambda (frame)
-		(custom-set-faces 
-		   '(default ((t (:background "black" :foreground "grey"))))
-		   '(fringe ((t (:background "black")))))))
-    )
+;; (if (daemonp)
+;;     (add-hook 'after-make-frame-functions
+;; 	      (lambda (frame)
+;; 		(custom-set-faces 
+;; 		   '(default ((t (:background "black" :foreground "grey"))))
+;; 		   '(fringe ((t (:background "black")))))))
+;;     )
 
 ;;auto-hide the menue bar
 ;;TODO: Not working on my windows box.
@@ -106,8 +111,6 @@
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
              
 ;; (package-refresh-contents)
-
-
 
 ;execute the install-if-needed function on every package in the 
 ;to-install-list
@@ -199,9 +202,9 @@
             (local-set-key (kbd "M-.") 'jedi:goto-definition)))
 
 ;;================Fonts===============
-(set-default-font
- "-outline-Consolas-normal-r-normal-normal-14-97-96-96-c-*-iso8859-1")
-(setq default-frame-alist '((font . "-outline-Consolas-normal-r-normal-normal-14-97-96-96-c-*-iso8859-1")))
+;; (set-default-font
+;;  "-outline-Consolas-normal-r-normal-normal-14-97-96-96-c-*-iso8859-1")
+;; (setq default-frame-alist '((font . "-outline-Consolas-normal-r-normal-normal-14-97-96-96-c-*-iso8859-1")))
 
 ;; Flymake settings for Python
 (defun flymake-python-init ()
@@ -279,10 +282,19 @@
 ;;work on python2 by default
 ;; (add-hook 'python-mode-hook (lambda ()
 ;;                               (venv-workon python2)))
-(venv-workon "python2")
+(venv-workon "wms")
 ;;show the venv on the mode line
 (setq-default mode-line-format (cons '(:exec venv-current-name) mode-line-format))
 
 ;;================DOCVIEW SETTINGS==============
 (setq doc-view-continuous 1)
 (add-hook 'doc-view-mode-hook 'auto-revert-mode)
+
+;;================Solarized Color Theme=========
+(when window-system
+  (add-to-list 'load-path "~/.emacs.d/emacs-color-theme-solarized.el")
+  (progn
+    (require 'color-theme)
+    (color-theme-initialize)
+    (require 'color-theme-solarized)
+    (color-theme-solarized-dark)))
