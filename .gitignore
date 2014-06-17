@@ -1,0 +1,5 @@
+session.*
+auto-save-list
+.python-environments/
+*.dat
+elpa/
