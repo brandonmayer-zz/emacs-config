@@ -6,23 +6,19 @@
 (or (server-running-p)
     (server-start))
 
+(add-to-list 'load-path "~/.emacs.d/")
+(setq inhibit-splash-screen t)
+
 ;;transparency
 (if window-system 
 (set-frame-parameter (selected-frame) 'alpha '(90 90)))
 (add-to-list 'default-frame-alist '(alpha 90 90))
-;; (if (daemonp)
-;;    (add-hook 'after-make-frame-functions
-;; 	     (lambda (frame) 
-;; 	       (set-frame-parameter (select-frame) 'alpha '(90 50)))
-;; 	     (lambda (frame) 
-;; 	       (add-to-list 'default-frame-alist '(alpha 90 50)))))
+
 (if (daemonp)
     (add-hook 'before-make-frame-hook
-	      (lambda () (set-frame-parameter (selected-frame) 'alpha '(90 90)))
-	      (lambda () (add-to-list 'default-frame-alist '(alpha 90 90)))))
+	 (lambda () (set-frame-parameter (selected-frame) 'alpha '(90 90)))
+	 (lambda () (add-to-list 'default-frame-alist '(alpha 90 90)))))
 
-(add-to-list 'load-path "~/.emacs.d/")
-(setq inhibit-splash-screen t)
 
 (require 'tramp)
 (setq tramp-default-method "ssh")
@@ -36,44 +32,11 @@
 ;;Kill toolbar
 (if window-system
   (tool-bar-mode 0)
-  (menu-bar-mode 0))
+  (menu-bar-mode 0)
+  (scroll-bar-mode -1))
 
-;; (scroll-bar-mode -1)
-
-;;above doesn't always work for emacs client
-;; (set-specifier horizontal-scrollbar-visible-p nil)
-;; (set-specifier vertical-scrollbar-visible-p nil)
-;; (if (daemonp)
-;;     (add-hook 'after-make-frame-functions
-;; 	      (lambda (frame)
-;; 		(scroll-bar-mode -1))))
-
-; Turn beep off
+;; Turn off beep
 (setq visible-bell nil)
-
-;;kill the lights
-(custom-set-faces
-  '(default ((t (:background "black" :foreground "grey"))))
-  '(fringe ((t (:background "black")))))
-
-(if (daemonp)
-    (add-hook 'after-make-frame-functions
-	      (lambda (frame)
-		(custom-set-faces 
-		   '(default ((t (:background "black" :foreground "grey"))))
-		   '(fringe ((t (:background "black")))))))
-    )
-
-;;auto-hide the menue bar
-;;TODO: Not working on my windows box.
-;; (load "active-menu.el")
-;; (require 'active-menu)
-;; (autoload 'active-menu
-;;            "active-menu"
-;;            "Show menu only when mouse is at the top of the frame."
-;;            t)
-;; (menu-bar-mode -99)
-
 ;;turn off all alarms
 (setq ring-bell-function 'ignore)
 
@@ -85,10 +48,6 @@
 (defun install-if-needed (package)
   (unless (package-installed-p package)
     (package-install package)));
-
-;; (defun install-python-mode ()
-;;   (unless (package-installed-p python-mode)
-;;     ())
 
 ;A list of things to install
 ;A single quote tells emacs not to evaluate the expression inside the list
@@ -171,22 +130,11 @@
  python-shell-completion-string-code
    "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
 
-;;yanked from http://www.jesshamrick.com/2012/09/18/emacs-as-a-python-ide/
-; switch to the interpreter after executing code
-;; (setq py-shell-switch-buffers-on-execute-p t)
-;; (setq py-switch-buffers-on-execute-p t)
-;; ; don't split windows
-;; (setq py-split-windows-on-execute-p nil)
-;; ; try to automagically figure out indentation
-;; (setq py-smart-indentation t)
-
-
 ;; ;; Jedi settings
 (require 'jedi)
 ;; It's also required to run "pip install --user jedi" and "pip
 ;; install --user epc" to get the Python side of the library work
-;; correctly.
-;; With the same interpreter you're using.
+;; correctly. With the same interpreter you're using.
 
 ;; if you need to change your python intepreter, if you want to change it
 ;; (setq jedi:server-command
@@ -277,8 +225,6 @@
 (setq venv-location "~/.virtualenvs")
 
 ;;work on python2 by default
-;; (add-hook 'python-mode-hook (lambda ()
-;;                               (venv-workon python2)))
 (venv-workon "python2")
 ;;show the venv on the mode line
 (setq-default mode-line-format (cons '(:exec venv-current-name) mode-line-format))
