@@ -19,7 +19,6 @@
 	 (lambda () (set-frame-parameter (selected-frame) 'alpha '(90 90)))
 	 (lambda () (add-to-list 'default-frame-alist '(alpha 90 90)))))
 
-
 (require 'tramp)
 (setq tramp-default-method "ssh")
 
@@ -29,11 +28,14 @@
 ;;show me the column number
 (setq column-number-mode t)
 
-;;Kill toolbar
-(if window-system
-  (tool-bar-mode 0)
-  (menu-bar-mode 0)
-  (scroll-bar-mode -1))
+;;Kill toolbar, menubar and scrollbar
+(if (boundp tool-bar-mode)
+    (tool-bar-mode -1))
+(if (boundp menu-bar-mode)
+    (menu-bar-mode -1))
+(if (boundp scroll-bar-mode)
+    scroll-bar-mode -1)
+
 
 ;; Turn off beep
 (setq visible-bell nil)
