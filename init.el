@@ -193,13 +193,30 @@
 
 ;; if you need to change your python intepreter, if you want to change it
 ;; (setq jedi:server-command
+
+;;add jump back functionality http://txt.arboreus.com/2013/02/21/jedi.el-jump-to-definition-and-back.html
+(defvar jedi:goto-stack '())
+(defun jedi:jump-to-definition ()
+  (interactive)
+  (add-to-list 'jedi:goto-stack
+               (list (buffer-name) (point)))
+  (jedi:goto-definition))
+(defun jedi:jump-back ()
+  (interactive)
+  (let ((p (pop jedi:goto-stack)))
+    (if p (progn
+            (switch-to-buffer (nth 0 p))
+            (goto-char (nth 1 p))))))
+
+
 (add-hook 'python-mode-hook
          (lambda ()
          (jedi:setup)
          (jedi:ac-setup)
-            (local-set-key "\C-cd" 'jedi:show-doc)
+            (local-set-key "\C-c d" 'jedi:show-doc)
             (local-set-key (kbd "M-SPC") 'jedi:complete)
-            (local-set-key (kbd "M-.") 'jedi:goto-definition)))
+            (local-set-key (kbd "M-.") 'jedi:goto-definition)
+            (local-set-key (kbd "C-,") 'jedi:jump-back)))
 
 ;;================Fonts===============
 ;; (set-default-font
