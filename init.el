@@ -6,7 +6,8 @@
 (or (server-running-p)
     (server-start))
 
-(add-to-list 'load-path "~/.emacs.d/")
+;; (add-to-list 'load-path "~/.emacs.d/")
+(add-to-list 'load-path "~/.emacs.d/lisp")
 (setq inhibit-splash-screen t)
 
 ;;transparency
@@ -67,8 +68,6 @@
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
              
 ;; (package-refresh-contents)
-
-
 
 ;execute the install-if-needed function on every package in the 
 ;to-install-list
@@ -212,7 +211,7 @@
 (setq venv-location "~/.virtualenvs")
 
 ;;work on python2 by default
-(venv-workon "python2")
+(venv-workon "env1")
 ;;show the venv on the mode line
 (setq-default mode-line-format (cons '(:exec venv-current-name) mode-line-format))
 
