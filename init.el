@@ -1,11 +1,13 @@
 ; Helpful python emacs setup:
 ; http://www.youtube.com/watch?v=0cZ7szFuz18&list=WLRWY_nnLzduOW16lec5L-ssd31pUij1nE
-(setq-default indent-tabs-mode nil)
-
 ;;For emacsclient
 (require 'server)
 (or (server-running-p)
     (server-start))
+
+(setq-default indent-tabs-mode nil)
+
+(setq inhibit-splash-screen t)
 
 ;;transparency
 (when window-system 
@@ -23,10 +25,13 @@
 ;; 	      (lambda () (add-to-list 'default-frame-alist '(alpha 90 90)))))
 
 (add-to-list 'load-path "~/.emacs.d/")
-(setq inhibit-splash-screen t)
+(add-to-list 'custom-theme-load-path "./themes")
 
 (require 'tramp)
 (setq tramp-default-method "ssh")
+
+;;initialize vlf-mode for viewing "Very Large Files."
+(require 'vlf-integrate)
 
 ;;use unix style line endings
 (setq default-buffer-file-coding-system 'utf-8-unix)
@@ -56,28 +61,6 @@
 ; Turn beep off
 (setq visible-bell nil)
 
-;;kill the lights
-;; (custom-set-faces
-;;   '(default ((t (:background "black" :foreground "grey"))))
-;;   '(fringe ((t (:background "black")))))
-
-;; (if (daemonp)
-;;     (add-hook 'after-make-frame-functions
-;; 	      (lambda (frame)
-;; 		(custom-set-faces 
-;; 		   '(default ((t (:background "black" :foreground "grey"))))
-;; 		   '(fringe ((t (:background "black")))))))
-;;     )
-
-;;auto-hide the menue bar
-;;TODO: Not working on my windows box.
-;; (load "active-menu.el")
-;; (require 'active-menu)
-;; (autoload 'active-menu
-;;            "active-menu"
-;;            "Show menu only when mouse is at the top of the frame."
-;;            t)
-;; (menu-bar-mode -99)
 
 ;;turn off all alarms
 (setq ring-bell-function 'ignore)
@@ -299,7 +282,7 @@
 ;;work on python2 by default
 ;; (add-hook 'python-mode-hook (lambda ()
 ;;                               (venv-workon python2)))
-(venv-workon "wms")
+(venv-workon "env1")
 ;;show the venv on the mode line
 (setq-default mode-line-format (cons '(:exec venv-current-name) mode-line-format))
 
@@ -307,24 +290,16 @@
 (setq doc-view-continuous 1)
 (add-hook 'doc-view-mode-hook 'auto-revert-mode)
 
-;;================Solarized Color Theme=========
-(when window-system
-  (add-to-list 'load-path "~/.emacs.d/emacs-color-theme-solarized.el")
-  (progn
-    (require 'color-theme)
-    (color-theme-initialize)
-    (require 'color-theme-solarized)
-    (color-theme-solarized-dark)))
+(put 'downcase-region 'disabled nil)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes (quote ("1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" default))))
+ '(custom-safe-themes (quote ("4486c1c29f022216ce050ababe284c05bcb24096a280f0615e28d27c31f31b24" "7bf64a1839bf4dbc61395bd034c21204f652185d17084761a648251041b70233" default))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-(put 'downcase-region 'disabled nil)
