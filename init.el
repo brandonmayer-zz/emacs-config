@@ -20,8 +20,28 @@
 	 (lambda () (set-frame-parameter (selected-frame) 'alpha '(90 90)))
 	 (lambda () (add-to-list 'default-frame-alist '(alpha 90 90)))))
 
+;;automatically revert modified buffers
+(global-auto-revert-mode 1)
+
+;;copy and paste to osx clipboard
+(defun copy-from-osx ()
+  (shell-command-to-string "pbpaste"))
+
+(defun paste-to-osx (text &optional push)
+  (let ((process-connection-type nil))
+    (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
+      (process-send-string proc text)
+      (process-send-eof proc))))
+
+(setq interprogram-cut-function 'paste-to-osx)
+(setq interprogram-paste-function 'copy-from-osx)
+
+;;spaces instead of tabs
+(setq-default indent-tabs-mode nil)
+
 (require 'tramp)
 (setq tramp-default-method "ssh")
+(setq tramp-chunksize 500)
 
 ;;use unix style line endings
 (setq default-buffer-file-coding-system 'utf-8-unix)
@@ -133,9 +153,10 @@
             (local-set-key (kbd "M-.") 'jedi:goto-definition)))
 
 ;;================Fonts===============
-(set-default-font
- "-outline-Consolas-normal-r-normal-normal-14-97-96-96-c-*-iso8859-1")
-(setq default-frame-alist '((font . "-outline-Consolas-normal-r-normal-normal-14-97-96-96-c-*-iso8859-1")))
+;; (set-default-font
+;;  "-outline-Consolas-normal-r-normal-normal-14-97-96-96-c-*-iso8859-1")
+;; (setq default-frame-alist '((font . "-outline-Consolas-normal-r-normal-normal-14-97-96-96-c-*-iso8859-1")))
+(set-face-attribute 'default nil :height 140)
 
 ;; Flymake settings for Python
 (defun flymake-python-init ()
@@ -218,3 +239,5 @@
 ;;================DOCVIEW SETTINGS==============
 (setq doc-view-continuous 1)
 (add-hook 'doc-view-mode-hook 'auto-revert-mode)
+
+(load-theme 'wombat t)
