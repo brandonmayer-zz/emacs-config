@@ -13,25 +13,16 @@
 (when window-system 
 (set-frame-parameter (selected-frame) 'alpha '(90 90)))
 (add-to-list 'default-frame-alist '(alpha 90 90))
-;; (if (daemonp)
-;;    (add-hook 'after-make-frame-functions
-;; 	     (lambda (frame) 
-;; 	       (set-frame-parameter (select-frame) 'alpha '(90 50)))
-;; 	     (lambda (frame) 
-;; 	       (add-to-list 'default-frame-alist '(alpha 90 50)))))
-;; (if (daemonp)
-;;     (add-hook 'before-make-frame-hook
-;; 	      (lambda () (set-frame-parameter (selected-frame) 'alpha '(90 90)))
-;; 	      (lambda () (add-to-list 'default-frame-alist '(alpha 90 90)))))
 
-(add-to-list 'load-path "~/.emacs.d/")
+;; (add-to-list 'load-path "~/.emacs.d/")
+(add-to-list 'load-path "~/.emacs.d/modules")
 (add-to-list 'custom-theme-load-path "./themes")
 
 (require 'tramp)
 (setq tramp-default-method "ssh")
 
 ;;initialize vlf-mode for viewing "Very Large Files."
-(require 'vlf-integrate)
+;; (require 'vlf-integrate)
 
 ;;use unix style line endings
 (setq default-buffer-file-coding-system 'utf-8-unix)
@@ -230,11 +221,17 @@
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.txx\\'" . c++-mode))
 
+;; (defun my-c-mode-common-hook ()
+;;   (setq c-set-style "bsd"
+;; 	c-basic-offset 2
+;; 	c-indent-level 2
+;; 	indent-tabs-mode nil)
+;; )
 (defun my-c-mode-common-hook ()
-  (setq c-default-style "linux"
-	c-basic-offset 2
-	c-indent-level 2
-	indent-tabs-mode nil)
+  (c-set-style "bsd")
+  (setq c-basic-offset 2)
+  (setq c-indent-level 2)
+  (setq indent-tabs-mode nil)
 )
 (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
 
