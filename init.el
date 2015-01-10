@@ -50,12 +50,12 @@
 (setq column-number-mode t)
 
 ;;Kill toolbar, menubar and scrollbar
-(if (boundp tool-bar-mode)
+(if window-system
     (tool-bar-mode -1))
-(if (boundp menu-bar-mode)
+(if window-system
     (menu-bar-mode -1))
-(if (boundp scroll-bar-mode)
-    scroll-bar-mode -1)
+(if window-system
+    (scroll-bar-mode -1))
 
 
 ;; Turn off beep
