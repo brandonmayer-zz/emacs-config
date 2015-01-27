@@ -10,6 +10,9 @@
 (add-to-list 'load-path "~/.emacs.d/lisp")
 (setq inhibit-splash-screen t)
 
+;;so meta dosn't display pi on macosx
+(set-keyboard-coding-system nil)
+
 ;;transparency
 (if window-system 
 (set-frame-parameter (selected-frame) 'alpha '(90 90)))
@@ -240,4 +243,5 @@
 (setq doc-view-continuous 1)
 (add-hook 'doc-view-mode-hook 'auto-revert-mode)
 
-(load-theme 'wombat t)
+(if window-system
+(load-theme 'wombat t))
