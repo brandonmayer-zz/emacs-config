@@ -60,7 +60,6 @@
 (if window-system
     (scroll-bar-mode -1))
 
-
 ;; Turn off beep
 (setq visible-bell nil)
 ;;turn off all alarms
@@ -69,6 +68,9 @@
 ;;backups should go to one directory
 ;;so as not to pollute a source tree
 (setq backup-directory-alist `(("." . "~/.saves")))
+
+;; use pdflatex instead of latex
+(setq latex-run-command "pdflatex")
 
 ;A function to only install packages that are not already installed
 (defun install-if-needed (package)
